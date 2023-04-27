@@ -66,11 +66,7 @@ sort_combo.place(x=20,y=5)
 
 # this function works to select a word
 def select(arg):
-    inputt = arg.curselection() 
-    if inputt:
-        index = inputt[0]
-        secilen = arg.get(index)
-        return secilen
+    return arg.selection_get()
 #---------------------------------------
 
 words = []
