@@ -14,7 +14,7 @@ window.title("Words")
 window.geometry("350x270+300+150")
 window.configure(bg="#ECEE66")
 window.attributes("-topmost",True)
-window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
+window
 # these codes work to destroy all windows
 def close_all_windows():
     #if messagebox.askokcancel("Exit", "Are you sure about exit from application"):
@@ -42,10 +42,13 @@ but2 = tk.Button(window,bg="#ECEE66",width=10,text="FALSE = ")
 but1.place(x=110,y=230)
 but2.place(x=220,y=230)
 # |this button will set of the word which we select|
+
 delete_button = tk.Button(window,text="Delete",font="bold 10",height=2,width=11)
 delete_button.place(x=5,y=165)
 # ------------------------------------
 #
+
+
 try_button = tk.Button(window,text="Try Yourself")
 try_button.place(x=15,y=220)
 
@@ -64,13 +67,21 @@ sort_combo = ttk.Combobox(window,values=values,width=8)
 sort_combo.place(x=20,y=5)
 
 checked = tk.BooleanVar(value=False)
-check = tk.Checkbutton(window,text="No Turkish Mean",background="#ECEE66",activebackground="#ECEE66",command="",variable=checked)
-check.place(x=150,y=5)
+check = tk.Checkbutton(window,text="Meaningless",background="#ECEE66",activebackground="#ECEE66",command="",variable=checked)
+check.place(x=110,y=5)
 # --------------------------------------
+
+checked2 = tk.BooleanVar(value=False)
+check2 = tk.Checkbutton(window,text="Showable false",background="#ECEE66",activebackground="#ECEE66",command="",variable=checked2)
+check2.place(x=210,y=5)
+
 
 # this function works to select a word
 def select(arg):
-    return arg.selection_get()
+    try:
+        return arg.selection_get()
+    except:
+        ...
 #---------------------------------------
 
 words = []
@@ -80,8 +91,9 @@ type_words = ["NOUNS","ADJECTIVES","PRONOUNS","VERBS",
               "ADVERBS","PREPOSİTİONS","CONJUNCTIONS","INTERJACTIONS","PATTERN"]
 
 class word():
-    def __init__(self,word,turkish_mean,description,word_type,sentence,date):
+    def __init__(self,word,turkish_mean,description,word_type,sentence,date,s):
         self.word = word
+        self.s = s
         self.mean = turkish_mean.lower()
         self.description = description
         self.type = word_type
@@ -89,28 +101,39 @@ class word():
         self.sentence = sentence
         words.append(self)
         words_names.append(self.word)
-        
+
+def asd():
+    a = []
+    if checked2.get() == True:
+        words_listbox.delete(0,tk.END)
+        for u in words:
+            if u.s == False and u not in a:
+                a.append(u)
+        for u in a:
+            words_listbox.insert(len(a),u.word)
+    else:
+        trf()        
 try:    
     with open("words.json","r",encoding="utf-8") as f:
         read = json.load(f)  
     for u in read[0]["Words"]:
-        word(u["Word"],u["Turkish_mean"],u["Description"],u["Type"],u["Sentence"],u["Date"])
+        word(u["Word"],u["Turkish_mean"],u["Description"],u["Type"],u["Sentence"],u["Date"],u["Showable"])
     for a in words_names: 
         words_listbox.insert(len(words_names)-1,a)
 except:
     ...
 # |this function works to delete the word which we select|
-
+check2.configure(command=asd)
 def delete_func():
-    take = sort_combo.get()
-    selected = select(words_listbox)
-    words_listbox.delete(0,tk.END)
-    index = words_names.index(selected) 
-    words.pop(index)
-    words_names.remove(selected)
-    second_names = words_names.copy()
-    sayi = 0
     try:
+        take = sort_combo.get()
+        selected = select(words_listbox)
+        words_listbox.delete(0,tk.END)
+        index = words_names.index(selected) 
+        words.pop(index)
+        words_names.remove(selected)
+        second_names = words_names.copy()
+        sayi = 0
         with open("words.json","r",encoding="utf-8") as a:
             read = json.load(a)
         read[0]["Words"].pop(index)
@@ -130,7 +153,7 @@ def show_wrong_answers():
         wrong_answer_window.geometry("350x160+700+150")
         wrong_answer_window.configure(bg="#ECEE66")
         wrong_answer_window.resizable(height=False,width=False)
-        wrong_answer_window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
+        wrong_answer_window
         listbox = tk.Listbox(wrong_answer_window,width=53,height=8)
         listbox.place(x=5,y=5)
         listb = ttk.Scrollbar(wrong_answer_window,command=listbox.yview)
@@ -149,7 +172,7 @@ def show_wrong_answers():
                         ww.geometry("350x80+670+150")
                         ww.configure(bg="#ECEE66")
                         ww.resizable(height=False,width=False)
-                        ww.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
+                        ww
                         lab1 = tk.Label(ww,text="word",bg="#ECEE66").place(x=30,y=5)
                         lab2 = tk.Label(ww,text="turkish mean",bg="#ECEE66").place(x=130,y=5)
                         lab3 = tk.Label(ww,text="your answer",bg="#ECEE66").place(x=250,y=5)
@@ -183,12 +206,14 @@ def show_info_word():
         info_window.resizable(height=False,width=False)
         info_window.configure(bg="#ECEE66")
         info_window.geometry("370x190+750+150")
-        info_window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
+        info_window
 
         seletc_word = select(words_listbox)
         seleted_index = words_names.index(seletc_word)
         main_word = words[seleted_index]
-        
+        booleana = tk.BooleanVar(info_window,value=main_word.s)
+        check1 = tk.Checkbutton(info_window,text="Show it in Try yourself",background="#ECEE66",activebackground="#ECEE66",command="",variable=booleana)
+        check1.place(x=30,y=140)
         word_entry = tk.Entry(info_window,justify=tk.CENTER,font="sans 10 bold",bg="#ECEE67",fg="red",width=47)
         word_entry.place(x=30,y=15)
         word_entry.insert(0,main_word.word)
@@ -216,18 +241,18 @@ def show_info_word():
                 with open("words.json","r",encoding="utf-8") as f:
                     read = json.load(f)
                 features = {"Word":word_entry.get(),"Turkish_mean":turkish_mean_entry.get(),"Type":type_combobox.get(),
-                    "Description":description_entry.get(),"Sentence":example_sentence_entry.get(),"Date":time.strftime("%x")}
+                    "Description":description_entry.get(),"Sentence":example_sentence_entry.get(),"Date":time.strftime("%x"),"Showable":booleana.get()}
                 read[0]["Words"][seleted_index] = features
                 with open("words.json","w",encoding="utf-8") as f:
                     read = json.dump(read,f,ensure_ascii=False,indent=4)
                 info_window.destroy()
-                words[seleted_index] = word(features["Word"],features["Turkish_mean"],features["Description"],features["Type"],features["Sentence"],features["Date"])
+                words[seleted_index] = word(features["Word"],features["Turkish_mean"],features["Description"],features["Type"],features["Sentence"],features["Date"],booleana.get())
                 for u in words_names:
                     if u == seletc_word:
                         indexx = words_names.index(seletc_word)
                         words_names[indexx] = features["Word"]
                         break
-                words_names.pop(-1)
+                words_names.pop(-1) 
                 trf()
             except:
                 pass
@@ -241,8 +266,8 @@ def add_word_func():
     word_window = tk.Toplevel(window)
     word_window.resizable(height=False,width=False)
     word_window.configure(bg="#ECEE66")
-    word_window.geometry("370x190+680+150")
-    word_window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
+    word_window.geometry("370x140+680+150")
+    word_window
     word_window.attributes("-topmost",True)
     # | we gave two argument for this function |
     # | first argument determines the entry    |
@@ -268,7 +293,10 @@ def add_word_func():
     turkish_mean_entry.place(x=30,y=40)
     entries(turkish_mean_entry,"Turkish Mean")
     #------------------------------------
-
+    sh = True
+    boolean = tk.BooleanVar(word_window,value=sh)
+    check1 = tk.Checkbutton(word_window,text="Show it in Try yourself",background="#ECEE66",activebackground="#ECEE66",command="",variable=boolean)
+    check1.place(x=30,y=110)
     # we will take the example sentece from this entry 
     example_sentence_entry = tk.Entry(word_window,justify=tk.CENTER,font="bold 10",width=28)
     example_sentence_entry.place(x=30,y=65)
@@ -292,8 +320,9 @@ def add_word_func():
     save_button.place(x=240,y=70)
     # |this function will work when we click save button|
     def save_func():
+        read = boolean.get()
         features = {"Word":word_entry.get(),"Turkish_mean":turkish_mean_entry.get(),"Type":type_combobox.get(),
-                    "Description":description_entry.get(),"Sentence":example_sentence_entry.get(),"Date":time.strftime("%x")}
+                    "Description":description_entry.get(),"Sentence":example_sentence_entry.get(),"Date":time.strftime("%x"),"showable":read}
         try:
             with open("words.json","r",encoding="utf-8") as f:
                 read = json.load(f)
@@ -303,29 +332,37 @@ def add_word_func():
         except:
             with open("words.json","w",encoding="utf-8") as f:
                 json.dump([{"Words":[features]}],f,ensure_ascii=False,indent=4)
-        word(features["Word"],features["Turkish_mean"],features["Description"],features["Type"],features["Sentence"],features["Date"])
+        word(features["Word"],features["Turkish_mean"],features["Description"],features["Type"],features["Sentence"],features["Date"],read)
         words_listbox.insert(len(words_names),features["Word"])
         trf()
         word_window.destroy()
+    def ff(s):
+        save_func()
     save_button.configure(command=save_func)
+    word_window.bind("<Return>",ff)
     word_window.mainloop()
 
-# |and we append a command to add_word_button by "configure" function|
+# |and we append a command to add_w ord_button by "configure" function|
 add_word_button.configure(command=add_word_func)
 def try_func():
     wrong_answers.clear()
+    global ll
     global true_answers
     global false_answers
     global random_word
+    global words_copy
+    ll = []
     try_window = tk.Toplevel(window)
     try_window.resizable(height=False,width=False)
     try_window.configure(bg="#ECEE66")
     try_window.geometry("200x130+680+150")
-    try_window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
+    try_window
     words_copy = words.copy()
-    random_word = random.choice(words_copy)
-    words_copy.remove(random_word)
-    
+    for u in words_copy:
+        if len(u.mean) >= 1 and u.mean != "turkish mean" and u.s == True:
+            ll.append(u)
+    random_word = random.choice(ll)
+    ll.remove(random_word)
     lab1 = tk.Label(try_window,text="|Turkish mean|",bg="#ECEE66").place(x=60,y=45)
     lab2 = tk.Label(try_window,text="TRUE = ",bg="#ECEE66",width=9)
     lab3 = tk.Label(try_window,text="FALSE =",bg="#ECEE66",width=9)
@@ -347,6 +384,8 @@ def try_func():
         global true_answers
         global false_answers        
         global random_word
+        global words_copy
+        global ll
         randomw = random_word.mean.lower()
         ran = randomw.split(",")
         answer_get = answer_entry.get()
@@ -360,36 +399,39 @@ def try_func():
             wrong_answers.append({"word":random_word.word,"Turkish mean":random_word.mean,"given answer":answer_get})    
         but1.configure(text=f"TRUE = {true_answers}")
         but2.configure(text=f"FALSE = {false_answers}")
-        if len(words_copy) == 0:
+        if len(ll) == 0:
             try_window.destroy()
-        else:    
+        else:
             english_word.delete(0,tk.END)
-            random_word = random.choice(words_copy)
-            words_copy.remove(random_word)
+            random_word = random.choice(ll)
+            ll.remove(random_word)
             english_word.insert(0,random_word.word)
+            
     def func(a):
         check_answer()
     check.configure(command=check_answer)
     answer_entry.bind("<Return>",func)
     try_window.mainloop()
 def trf():
-    if checked.get() == True:
-        ll = [] 
-        for u in words:
-            if len(u.mean) == 0 or u.mean == "turkish mean":
-                ll.insert(0,u.word)
-        for u in words:
-            if (u.word in ll) and (len(u.mean) != 0 and u.mean != "turkish mean"):
-                ll.pop(ll.index(u.word))
-        words_listbox.delete(0,tk.END)
-        for u in ll:
-            while ll.count(u) > 1:
-                ll.pop(ll.index(u))
-        for u in ll:
-            words_listbox.insert(len(ll),u)
-    else:
-        sort_function()
-
+    try:
+        if checked.get() == True:
+            ll = [] 
+            for u in words:
+                if len(u.mean) == 0 or u.mean == "turkish mean":
+                    ll.insert(0,u.word)
+            for u in words:
+                if (u.word in ll) and (len(u.mean) != 0 and u.mean != "turkish mean"):
+                    ll.pop(ll.index(u.word))
+            words_listbox.delete(0,tk.END)
+            for u in ll:
+                while ll.count(u) > 1:
+                    ll.pop(ll.index(u))
+            for u in ll:
+                words_listbox.insert(len(ll),u)
+        else:
+            sort_function()
+    except:
+        ...
 check.configure(command=trf)
 try_button.configure(command=try_func)
 
