@@ -15,7 +15,6 @@ window.title("Words")
 window.geometry("350x300+300+150")
 window.configure(bg="#ECEE66")
 window.attributes("-topmost",True)
-window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
 # these codes work to destroy all windows
 def close_all_windows():
     #if messagebox.askokcancel("Exit", "Are you sure about exit from application"):
@@ -185,7 +184,6 @@ def show_wrong_answers():
         wrong_answer_window.geometry("350x160+700+150")
         wrong_answer_window.configure(bg="#ECEE66")
         wrong_answer_window.resizable(height=False,width=False)
-        wrong_answer_window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
         listbox = tk.Listbox(wrong_answer_window,width=53,height=8)
         listbox.place(x=5,y=5)
         listb = ttk.Scrollbar(wrong_answer_window,command=listbox.yview)
@@ -238,7 +236,6 @@ def show_info_word():
         info_window.resizable(height=False,width=False)
         info_window.configure(bg="#ECEE66")
         info_window.geometry("370x190+750+150")
-        info_window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
 
         seletc_word = select(words_listbox)
         seleted_index = words_names.index(seletc_word)
@@ -301,7 +298,6 @@ def add_word_func():
     word_window.resizable(height=False,width=False)
     word_window.configure(bg="#ECEE66")
     word_window.geometry("370x140+680+150")
-    word_window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
     word_window.attributes("-topmost",True)
     # | we gave two argument for this function |
     # | first argument determines the entry    |
@@ -390,7 +386,6 @@ def try_func():
     try_window.resizable(height=False,width=False)
     try_window.configure(bg="#ECEE66")
     try_window.geometry("200x130+680+150")
-    try_window.iconbitmap("C:\\Users\\efeek\\Desktop\\pyhton\\a.ico")
     words_copy = words.copy()
     for u in words_copy:
         if len(u.mean) >= 1 and u.mean != "turkish mean" and u.s == True:
